@@ -1,177 +1,177 @@
 export interface SearchTree<T> {
-  add: (element: T) => boolean;
-  remove: (element: T) => boolean;
-  clear: () => void;
-  min: () => T | null;
-  max: () => T | null;
-  search: (element: T) => T | null;
-  isEmpty: () => boolean;
-  size: () => number;
-  height: () => number;
+  add: (element: T) => boolean
+  remove: (element: T) => boolean
+  clear: () => void
+  min: () => T | null
+  max: () => T | null
+  search: (element: T) => T | null
+  isEmpty: () => boolean
+  size: () => number
+  height: () => number
 }
 
 class BSTNode<T> {
-  private value: T;
-  private right: BSTNode<T> | null = null;
-  private left: BSTNode<T> | null = null;
+  private value: T
+  private right: BSTNode<T> | null = null
+  private left: BSTNode<T> | null = null
   constructor(value: T) {
-    this.value = value;
+    this.value = value
   }
   public add = (element: T): BSTNode<T> => {
     if (element <= this.value) {
-      const node = this.left ? this.left.add(element) : new BSTNode(element);
-      this.left = node;
+      const node = this.left ? this.left.add(element) : new BSTNode(element)
+      this.left = node
     } else {
-      const node = this.right ? this.right.add(element) : new BSTNode(element);
-      this.right = node;
+      const node = this.right ? this.right.add(element) : new BSTNode(element)
+      this.right = node
     }
-    return this;
-  };
+    return this
+  }
 
-  public getValue = () => this.value;
+  public getValue = () => this.value
 
   public size = (): number => {
-    return 1 + (this.left?.size() ?? 0) + (this.right?.size() ?? 0);
-  };
+    return 1 + (this.left?.size() ?? 0) + (this.right?.size() ?? 0)
+  }
 
   public height = (): number => {
     return (
       1 +
       Math.max(this.left?.height() ?? 0, Math.max(this.right?.height() ?? 0))
-    );
-  };
+    )
+  }
 
   public search = (element: T): BSTNode<T> | null => {
     if (element === this.value) {
-      return this;
+      return this
     }
-    let result = null;
+    let result = null
     if (element < this.value) {
-      result = this.left?.search(element) ?? null;
+      result = this.left?.search(element) ?? null
     }
 
     if (!result && element > this.value) {
-      result = this.right?.search(element) ?? null;
+      result = this.right?.search(element) ?? null
     }
-    return result;
-  };
+    return result
+  }
 
   private isLeaf = () => {
-    return !this.left && !this.right;
-  };
+    return !this.left && !this.right
+  }
 
   public max = (): T | null => {
-    return this.right ? this.right.max() : this.value;
-  };
+    return this.right ? this.right.max() : this.value
+  }
 
   public min = (): T | null => {
-    return this.left ? this.left.min() : this.value;
-  };
+    return this.left ? this.left.min() : this.value
+  }
 
   // This method needs to be tidied up, in the Java example by reference works neater than it does here
   public remove = (
     element: T,
     wasRemoved: boolean = false
   ): { node: BSTNode<T> | null; wasRemoved: boolean } => {
-    let node = null;
+    let node = null
     if (element === this.value) {
-      wasRemoved = true;
+      wasRemoved = true
       if (this.isLeaf()) {
-        return { node, wasRemoved };
+        return { node, wasRemoved }
       } else if (!this.right || (this.left !== null && Math.random() > 0.5)) {
-        const prevKey = this.left?.max() ?? null;
+        const prevKey = this.left?.max() ?? null
         if (prevKey) {
-          this.value = prevKey;
+          this.value = prevKey
           // this is ideal but doesn't override the wasRemoved property...
-          const result = this.left?.remove(prevKey, wasRemoved);
+          const result = this.left?.remove(prevKey, wasRemoved)
           if (result) {
-            this.left = result.node;
-            wasRemoved = result.wasRemoved;
+            this.left = result.node
+            wasRemoved = result.wasRemoved
           } else {
-            this.left = null;
+            this.left = null
           }
           //   this.left = this.left?.remove(prevKey, wasRemoved).node ?? null;
         }
       } else {
-        const nextKey = this.right?.min() ?? null;
+        const nextKey = this.right?.min() ?? null
         if (nextKey) {
-          this.value = nextKey;
+          this.value = nextKey
           // this is ideal but doesn't override the wasRemoved property...
           //   this.right = this.right?.remove(nextKey, wasRemoved).node ?? null;
-          const result = this.right?.remove(nextKey, wasRemoved);
+          const result = this.right?.remove(nextKey, wasRemoved)
           if (result) {
-            this.right = result.node;
-            wasRemoved = result.wasRemoved;
+            this.right = result.node
+            wasRemoved = result.wasRemoved
           } else {
-            this.right = null;
+            this.right = null
           }
         }
       }
-      return { node: this, wasRemoved };
+      return { node: this, wasRemoved }
     }
     if (element < this.value) {
       // this is ideal but doesn't override the wasRemoved property...
       //   this.left = this.left ? this.left.remove(element, wasRemoved).node : null;
-      const result = this.left?.remove(element, wasRemoved);
+      const result = this.left?.remove(element, wasRemoved)
       if (result) {
-        this.left = result.node;
-        wasRemoved = result.wasRemoved;
+        this.left = result.node
+        wasRemoved = result.wasRemoved
       } else {
-        this.left = null;
+        this.left = null
       }
     } else {
       // this is ideal but doesn't override the wasRemoved property...
       //   this.right = this.right
       //     ? this.right.remove(element, wasRemoved).node
       //     : null;
-      const result = this.right?.remove(element, wasRemoved);
+      const result = this.right?.remove(element, wasRemoved)
       if (result) {
-        this.right = result.node;
-        wasRemoved = result.wasRemoved;
+        this.right = result.node
+        wasRemoved = result.wasRemoved
       } else {
-        this.right = null;
+        this.right = null
       }
     }
-    return { node: this, wasRemoved };
-  };
+    return { node: this, wasRemoved }
+  }
 }
 
 export class BST<T> implements SearchTree<T> {
-  private root: BSTNode<T> | null;
+  private root: BSTNode<T> | null
   constructor(root = null) {
-    this.root = root;
+    this.root = root
   }
 
   public add = (element: T) => {
-    this.root ? this.root.add(element) : (this.root = new BSTNode(element));
-    return true;
-  };
+    this.root ? this.root.add(element) : (this.root = new BSTNode(element))
+    return true
+  }
 
   public remove = (element: T) => {
-    return this.root ? this.root.remove(element).wasRemoved : false;
-  };
+    return this.root ? this.root.remove(element).wasRemoved : false
+  }
 
   public clear = () => {
-    this.root = null;
-  };
+    this.root = null
+  }
 
-  public min = () => (this.root ? this.root.min() : null);
+  public min = () => (this.root ? this.root.min() : null)
 
-  public max = () => (this.root ? this.root.max() : null);
+  public max = () => (this.root ? this.root.max() : null)
 
   public search = (element: T) => {
-    return this.root ? this.root.search(element)?.getValue() ?? null : null;
-  };
+    return this.root ? this.root.search(element)?.getValue() ?? null : null
+  }
 
   public isEmpty = () => {
-    return this.root ? false : true;
-  };
+    return this.root ? false : true
+  }
 
   public size = () => {
-    return this.root ? this.root.size() : 0;
-  };
+    return this.root ? this.root.size() : 0
+  }
 
   public height = () => {
-    return this.root ? this.root.height() : 0;
-  };
+    return this.root ? this.root.height() : 0
+  }
 }

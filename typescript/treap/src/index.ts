@@ -1,7 +1,7 @@
 const testFunc = () => {
-  true ? hello() : hello();
-};
+  true ? hello() : hello()
+}
 
-const hello = () => {};
+const hello = () => {}
 
-testFunc();
+testFunc()
