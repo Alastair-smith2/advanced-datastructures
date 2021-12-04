@@ -1,4 +1,4 @@
-import { ILinkedList, LinkedList } from '../core/linked-list'
+import { ILinkedList, LinkedList } from '../core/linked-list/double'
 
 describe('The linked list', () => {
   let list: ILinkedList<number>
