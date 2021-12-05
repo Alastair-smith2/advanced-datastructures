@@ -1,4 +1,4 @@
-// Comments on most of these methods come from the book implementation
+// A lot of the comments come from the book implementation
 // https://github.com/mlarocca/AlgorithmsAndDataStructuresInAction/blob/master/JavaScript/src/bloom_filter/bloom_filter.js
 import { fnv1Hash32, murmurHash32 } from './hashes'
 import { consistentStringify } from './stringify'
@@ -27,6 +27,13 @@ export class BloomFilter<T> implements BloomFilterable<T> {
   // Array of 8-bit unsigned ints
   // Bytes / element = 1
   private bitsArray: Uint8Array
+
+  /**
+   *
+   * Construct a Bloom filter that can hold at most maxSize while guaranteeing an error rate (probability of a false
+   * positive) of at most `maxTolerance`
+   *
+   */
   constructor(
     maxSize: number,
     maxTolerance: number = 0.01,
@@ -37,17 +44,25 @@ export class BloomFilter<T> implements BloomFilterable<T> {
   ) {
     this.maxSize = maxSize
     this.seed = seed
+
+    // Optimal number of bits: m = - n * ln(p) / (ln(2))^2
     this.numOfBits = -Math.ceil(
       (maxSize * Math.log(maxTolerance)) / LN_2 / LN_2
     )
     if (this.numOfBits > Number.MAX_SAFE_INTEGER) {
       throw new Error('Overflow')
     }
+
+    // Optimal number of hashes: k = m/n * ln(2)
     this.numberHashFunctions = -Math.ceil(Math.log(maxTolerance) / LN_2)
+
+    // Number of bytes needed to store all the filter's bits
     const numberOfElements = Math.ceil(
       this.numOfBits / Uint8Array.BYTES_PER_ELEMENT
     )
     this.bitsArray = new Uint8Array(numberOfElements)
+
+    // Initialise hash functions upfront
     this.hashFunctions = this.initHahshes(
       this.numberHashFunctions,
       this.numOfBits
