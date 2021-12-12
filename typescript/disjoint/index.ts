@@ -1,12 +1,4 @@
-// export interface DisjointSetBehaviour<T> {
-//   init: (universe: T) => void
-//   findPartition: (element: T) => boolean
-//   merge: (a: T, b: T) => void
-//   areDisjoint: (a: T, b: T) => void
-// }
-
 export interface DisjointSetBehaviour<T> {
-  // this is private?
   findPartition: (element: T) => T | null
   add: (element: T) => boolean
   merge: (a: T, b: T) => boolean

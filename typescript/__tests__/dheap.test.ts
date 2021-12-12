@@ -14,6 +14,7 @@ describe('The priority queue behaviour', () => {
       return elementA.priority > elementB.priority
     }
     heap = new Heap(
+      compare,
       [
         { title: 'Example A', priority: 6 },
         { title: 'Example B', priority: 3 },
@@ -25,8 +26,7 @@ describe('The priority queue behaviour', () => {
         { title: 'Example H', priority: 25 },
         { title: 'Example I', priority: 20 },
       ],
-      2,
-      compare
+      2
     )
   })
 

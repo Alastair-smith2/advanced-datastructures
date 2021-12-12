@@ -12,9 +12,9 @@ export class DHeap<T> implements PriorityQueue<T> {
   private compare: Compare<T>
 
   constructor(
+    compareFunction: Compare<T>,
     elements: T[] = [],
-    branchFactor: number = 2,
-    compareFunction: Compare<T>
+    branchFactor: number = 2
   ) {
     this.branchFactor = branchFactor
     this.elements = elements
