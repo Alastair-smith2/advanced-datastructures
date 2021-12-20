@@ -5,8 +5,9 @@ type Compare<T> = (elementA: T, elementB: T) => boolean
 export class DHeap<T> implements PriorityQueue<T> {
   private elements: T[]
   // Can't use object as the map key unless we're being passed in the exact instance of the object
-  // instead we can JSON.stringify the element to make it a string
+  // instead we can JSON.stringify the element to make it a string (caveat - key ordering matters)
   // can refactor this to do a check if value passed is non primitive
+  // something like https://github.com/AvraamMavridis/Algorithms-Data-Structures-in-Typescript/blob/master/algorithms/quickSort_generic.md would be better
   private elementPositions: Map<string, number>
   private branchFactor: number
   private compare: Compare<T>
