@@ -5,4 +5,5 @@ export interface PriorityQueue<T> {
   remove: (element: T) => boolean
   update: (element: T, newValue: T) => boolean
   contains: (element: T) => boolean
+  isEmpty: () => boolean
 }

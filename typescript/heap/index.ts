@@ -115,6 +115,8 @@ export class DHeap<T> implements PriorityQueue<T> {
     return this.elementPositions.has(JSON.stringify(element))
   }
 
+  isEmpty = () => this.elements.length === 0
+
   private bubbleUp = (index = this.elements.length - 1) => {
     let current = this.elements[index]
     let parentIndex: number
